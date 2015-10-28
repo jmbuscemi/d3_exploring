@@ -1,7 +1,7 @@
 # D3 Explorations and Learning
 This repo is me exploring D3 and learning during [@masonfmatthews](https://github.com/masonfmatthews) Week 9 lecture at TIY.
 
-## Concepts explored:
+## Concepts Explored:
 * `<svg>` tags
 * `<g>` tags
   * embedding `<circle> <rect> <line>` withinn `<g>`
