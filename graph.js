@@ -30,8 +30,7 @@ d3.csv("data.csv", function(data) {
 function updateDiscoveries() {
   var field_name = this.value;
   d3.csv("data.csv", function(data) {
-    join = g.selectAll("circle")
-        .data(data);
+    join = g.selectAll("circle").data(data);
 
     join.transition().duration(1000)
       .attr("cx", function(d) {return x(d["year"]);} )
