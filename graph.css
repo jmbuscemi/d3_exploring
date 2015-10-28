@@ -15,8 +15,3 @@ path {
 .tick {
   stroke: black;
 }
-
-circle {
-  stroke: darkblue;
-  fill: lightblue;
-}
