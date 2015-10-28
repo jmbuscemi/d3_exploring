@@ -1,14 +1,44 @@
-var scale = d3.scale.linear()
-    .domain([2000, 2012])
-    .range([50, 950]);
+svg = d3.select("svg");
+g = svg.append("g");
+g.attr("transform", "translate(100,50)");
 
-var axis = d3.svg.axis()
-    .scale(scale)
-    .orient("bottom")
-    .ticks(13)
-    .tickFormat(d3.format("d"));
-    
-var g = d3.select("g");
+x = d3.scale.linear()
+    .domain([1997, 2015])  // Fill in the domain values for the x axis
+    .range([0, 800]);
+y = d3.scale.linear()
+    .domain([0, 60])  // Fill in the domain values for the y axis
+    .range([400, 0]);
 
-g.call(axis);
-g.append("circle").attr("cx", scale(2005)).attr("r", 5)
+x_axis = d3.svg.axis().scale(x).orient("bottom").ticks(5).tickFormat(d3.format("d"));
+y_axis = d3.svg.axis().scale(y).orient("left").ticks(4);
+
+g.call(y_axis);
+
+gx = g.append("g")
+gx.call(x_axis);
+gx.attr("transform", "translate(0,400)");
+
+d3.csv("old_discoveries.csv", function(csv_data) {
+  g.selectAll("circle")
+    .data(csv_data)
+    .enter().append("circle")
+      .attr("cx", function(point) {return x(point.year)})
+      .attr("cy", function(point) {return y(point.important_discoveries)})
+      .attr("r", function(point){return point.important_discoveries});
+});
+
+d3.select("#update-data").on("click", function(){
+  d3.csv("new_discoveries.csv", function(csv_data) {
+    var join = g.selectAll("circle").data(csv_data);
+
+      join.attr("cx", function(point) {return x(point.year)})
+        .attr("cy", function(point) {return y(point.important_discoveries)});
+
+      join.enter().append("circle")
+        .attr("cx", function(point) {return x(point.year)})
+        .attr("cy", function(point) {return y(point.important_discoveries)})
+        .attr("r", function(point){return point.important_discoveries});
+
+      join.exit().remove();
+  });
+});
