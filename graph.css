@@ -17,9 +17,9 @@ path {
 }
 
 circle {
-  fill: red;
+  fill: #7ECABB;
   stroke: black;
-  stroke-width: 30;
+  stroke-width: 2;
 }
 
 line {
