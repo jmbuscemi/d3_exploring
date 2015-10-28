@@ -15,3 +15,13 @@ path {
 .tick {
   stroke: black;
 }
+
+circle {
+  fill: red;
+  stroke: black;
+  stroke-width: 30;
+}
+
+line {
+  stroke: blue;
+}
