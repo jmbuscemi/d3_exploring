@@ -10,3 +10,10 @@ This repo is me exploring D3 and learning during [@masonfmatthews](https://githu
   * `.orient`
   * `.axis`
   * `.ticks`
+* `d3.csv("data.csv", function(data) { }`
+  * `.data(data)`
+  * `.attr("cx", function(d) {return x(d["year"]);} )`
+  * `join = g.selectAll("circle").data(data);`
+* Change data on button click
+* Change data on option selected via `<select>` tags.
+* `.transition().duration(1000)` for smooth transition between data change
