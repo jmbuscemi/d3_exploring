@@ -3,10 +3,10 @@ g = svg.append("g");
 g.attr("transform", "translate(100,50)");
 
 x = d3.scale.linear()
-    .domain([1997, 2015])  // Fill in the domain values for the x axis
+    .domain([1997, 2015])
     .range([0, 800]);
 y = d3.scale.linear()
-    .domain([0, 60])  // Fill in the domain values for the y axis
+    .domain([0, 100])
     .range([400, 0]);
 
 x_axis = d3.svg.axis().scale(x).orient("bottom").ticks(5).tickFormat(d3.format("d"));
@@ -18,27 +18,25 @@ gx = g.append("g")
 gx.call(x_axis);
 gx.attr("transform", "translate(0,400)");
 
-d3.csv("old_discoveries.csv", function(csv_data) {
+d3.csv("data.csv", function(data) {
   g.selectAll("circle")
-    .data(csv_data)
+      .data(data)
     .enter().append("circle")
-      .attr("cx", function(point) {return x(point.year)})
-      .attr("cy", function(point) {return y(point.important_discoveries)})
-      .attr("r", function(point){return point.important_discoveries});
+      .attr("cx", function(d) {return x(d["year"]);} )
+      .attr("cy", function(d) {return y(d["accidental_deaths_in_thousands"]);} )
+      .attr("r", 10);
 });
 
-d3.select("#update-data").on("click", function(){
-  d3.csv("new_discoveries.csv", function(csv_data) {
-    var join = g.selectAll("circle").data(csv_data);
+function updateDiscoveries() {
+  var field_name = this.value;
+  d3.csv("data.csv", function(data) {
+    join = g.selectAll("circle")
+        .data(data);
 
-      join.attr("cx", function(point) {return x(point.year)})
-        .attr("cy", function(point) {return y(point.important_discoveries)});
-
-      join.enter().append("circle")
-        .attr("cx", function(point) {return x(point.year)})
-        .attr("cy", function(point) {return y(point.important_discoveries)})
-        .attr("r", function(point){return point.important_discoveries});
-
-      join.exit().remove();
+    join.transition().duration(1000)
+      .attr("cx", function(d) {return x(d["year"]);} )
+      .attr("cy", function(d) {return y(d[field_name]);} );
   });
-});
+}
+
+d3.select("#the-select").on("change", updateDiscoveries);
