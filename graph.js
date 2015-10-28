@@ -18,29 +18,25 @@ gx = g.append("g")
 gx.call(x_axis);
 gx.attr("transform", "translate(0,400)");
 
-d3.csv("old_discoveries.csv", function(data) {
+d3.csv("data.csv", function(data) {
   g.selectAll("circle")
       .data(data)
     .enter().append("circle")
       .attr("cx", function(d) {return x(d["year"]);} )
-      .attr("cy", function(d) {return y(d["important_discoveries"]);} )
+      .attr("cy", function(d) {return y(d["accidental_deaths_in_thousands"]);} )
       .attr("r", 10);
 });
 
 function updateDiscoveries() {
-  d3.csv("new_discoveries.csv", function(data) {
+  var field_name = this.value;
+  d3.csv("data.csv", function(data) {
     join = g.selectAll("circle")
         .data(data);
 
-    join.attr("cx", function(d) {return x(d["year"]);} )
-        .attr("cy", function(d) {return y(d["important_discoveries"]);} );
-
-    join.enter().append("circle")
-        .attr("cx", function(d) {return x(d["year"]);} )
-        .attr("cy", function(d) {return y(d["important_discoveries"]);} );
-
-    join.exit().remove();
+    join.transition().duration(1000)
+      .attr("cx", function(d) {return x(d["year"]);} )
+      .attr("cy", function(d) {return y(d[field_name]);} );
   });
 }
 
-d3.select("#update_button").on("click", updateDiscoveries);
+d3.select("#the-select").on("change", updateDiscoveries);
