@@ -3,10 +3,10 @@ g = svg.append("g");
 g.attr("transform", "translate(100,50)");
 
 x = d3.scale.linear()
-    .domain([ , ])  // Fill in the domain values for the x axis
+    .domain([2000, 2012])
     .range([0, 800]);
 y = d3.scale.linear()
-    .domain([ , ])  // Fill in the domain values for the y axis
+    .domain([0, 100])
     .range([400, 0]);
 
 x_axis = d3.svg.axis().scale(x).orient("bottom").ticks(5).tickFormat(d3.format("d"));
@@ -18,6 +18,29 @@ gx = g.append("g")
 gx.call(x_axis);
 gx.attr("transform", "translate(0,400)");
 
-// Okay, now all of your axes are set up.  Add code to draw points here.
+d3.csv("old_discoveries.csv", function(data) {
+  g.selectAll("circle")
+      .data(data)
+    .enter().append("circle")
+      .attr("cx", function(d) {return x(d["year"]);} )
+      .attr("cy", function(d) {return y(d["important_discoveries"]);} )
+      .attr("r", 10);
+});
 
-g.append( ). //Fill in the parens and add stuff after the last dot, then make more of these lines.
+function updateDiscoveries() {
+  d3.csv("new_discoveries.csv", function(data) {
+    join = g.selectAll("circle")
+        .data(data);
+
+    join.attr("cx", function(d) {return x(d["year"]);} )
+        .attr("cy", function(d) {return y(d["important_discoveries"]);} );
+
+    join.enter().append("circle")
+        .attr("cx", function(d) {return x(d["year"]);} )
+        .attr("cy", function(d) {return y(d["important_discoveries"]);} );
+
+    join.exit().remove();
+  });
+}
+
+d3.select("#update_button").on("click", updateDiscoveries);
