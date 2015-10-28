@@ -18,25 +18,11 @@ gx = g.append("g")
 gx.call(x_axis);
 gx.attr("transform", "translate(0,400)");
 
-d3.csv("old_discoveries.csv", function(data) {
-  data.forEach(function(point){
-    g.append("circle")
-      .attr("cx", x(point.year))
-      .attr("cy", y(point.important_discoveries))
-      .attr("r", point.important_discoveries);
-  });
+d3.csv("old_discoveries.csv", function(csv_data) {
+  g.selectAll("circle")
+    .data(csv_data)
+    .enter().append("circle")
+      .attr("cx", function(point) {return x(point.year)})
+      .attr("cy", function(point) {return x(point.important_discoveries)})
+      .attr("r", function(point) {return point.important_discoveries)});
 });
-
-// Okay, now all of your axes are set up.  Add code to draw points here.
-//Fill in the parens and add stuff after the last dot, then make more of these lines.
-// g.append("circle").attr("cx", x(2000)).attr("cy", y(45)).attr("r", 45);
-// g.append("circle").attr("cx", x(2001)).attr("cy", y(4)).attr("r", 4);
-// g.append("circle").attr("cx", x(2002)).attr("cy", y(2)).attr("r", 2);
-// g.append("circle").attr("cx", x(2003)).attr("cy", y(2)).attr("r", 2);
-// g.append("circle").attr("cx", x(2004)).attr("cy", y(4)).attr("r", 4);
-// g.append("circle").attr("cx", x(2005)).attr("cy", y(12)).attr("r", 12);
-// g.append("circle").attr("cx", x(2006)).attr("cy", y(23)).attr("r", 23);
-// g.append("circle").attr("cx", x(2007)).attr("cy", y(54)).attr("r", 54);
-// g.append("circle").attr("cx", x(2008)).attr("cy", y(12)).attr("r", 12);
-// g.append("circle").attr("cx", x(2009)).attr("cy", y(1)).attr("r", 1) ;
-// ;
