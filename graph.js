@@ -23,6 +23,22 @@ d3.csv("old_discoveries.csv", function(csv_data) {
     .data(csv_data)
     .enter().append("circle")
       .attr("cx", function(point) {return x(point.year)})
-      .attr("cy", function(point) {return x(point.important_discoveries)})
-      .attr("r", function(point) {return point.important_discoveries)});
+      .attr("cy", function(point) {return y(point.important_discoveries)})
+      .attr("r", function(point){return point.important_discoveries});
+});
+
+d3.select("#update-data").on("click", function(){
+  d3.csv("new_discoveries.csv", function(csv_data) {
+    var join = g.selectAll("circle").data(csv_data);
+
+      join.attr("cx", function(point) {return x(point.year)})
+        .attr("cy", function(point) {return y(point.important_discoveries)});
+
+      join.enter().append("circle")
+        .attr("cx", function(point) {return x(point.year)})
+        .attr("cy", function(point) {return y(point.important_discoveries)})
+        .attr("r", function(point){return point.important_discoveries});
+
+      join.exit().remove();
+  });
 });
